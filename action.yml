@@ -2,7 +2,7 @@ name: 'Create release notes'
 author: 'Vitalii Kalinbet <vitalii.kalinbet@gmail.com>'
 
 inputs:
-  GITHUB_TOKEN:
+  myToken:
     description: 'GitHub token'
     required: true
 
