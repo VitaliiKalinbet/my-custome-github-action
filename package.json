@@ -1,0 +1,23 @@
+{
+  "name": "my-custome-github-action",
+  "version": "1.0.0",
+  "description": "custome github action",
+  "main": "index.js",
+  "scripts": {
+    "build": "ncc build src/action.js -o dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VitaliiKalinbet/my-custome-github-action.git"
+  },
+  "author": "Vitalii Kalinbet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VitaliiKalinbet/my-custome-github-action/issues"
+  },
+  "homepage": "https://github.com/VitaliiKalinbet/my-custome-github-action#readme",
+  "dependencies": {
+    "@vercel/ncc": "^0.34.0"
+  }
+}
