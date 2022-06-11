@@ -10203,32 +10203,30 @@ __nccwpck_require__.r(__webpack_exports__);
 
 
 
-const src = __dirname
+// const src = __dirname
 
 async function run() {
   try {
     var headRef = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('head-ref')
     var baseRef = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('base-ref')
     const myToken = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('myToken')
+    const preRelease = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('preRelease')
     const reverse = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('reverse')
     const octokit = new _actions_github__WEBPACK_IMPORTED_MODULE_2__.getOctokit(myToken)
     const { owner, repo } = _actions_github__WEBPACK_IMPORTED_MODULE_2__.context.repo
     const regexp = /^[.A-Za-z0-9_-]*$/
 
-    const listCommits = await octokit.rest.repos.listCommits({
-        owner,
-        repo,
-      });
-    console.log('custome action listCommits: >> ', listCommits)
-
-    const listReleases = await octokit.rest.repos.listReleases({
-        owner,
-        repo,
-      });
-    console.log('custome action listReleases: >> ', listReleases)
-
     if (!headRef) {
-      headRef = _actions_github__WEBPACK_IMPORTED_MODULE_2__.context.sha
+      const listReleases = await octokit.rest.repos.listReleases({
+        owner,
+        repo,
+      });
+
+      headRef = listReleases?.data[1]?.tag_name || _actions_github__WEBPACK_IMPORTED_MODULE_2__.context.sha
+
+      if (preRelease && !baseRef) {
+        baseRef = listReleases?.data[0]?.tag_name || ''
+      }
     }
 
     if (!baseRef) {
@@ -10270,23 +10268,35 @@ async function getChangelog(headRef, baseRef, repoName, reverse) {
     let output = ''
     let err = ''
 
-    // These are option configurations for the @actions/exec lib`
-    const options = {}
-    options.listeners = {
-      stdout: data => {
-        output += data.toString()
-      },
-      stderr: data => {
-        err += data.toString()
-      }
-    }
-    options.cwd = './'
+    // // These are option configurations for the @actions/exec lib`
+    // const options = {}
+    // options.listeners = {
+    //   stdout: data => {
+    //     output += data.toString()
+    //   },
+    //   stderr: data => {
+    //     err += data.toString()
+    //   }
+    // }
+    // options.cwd = './'
 
-    await (0,_actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)(
-      `${src}/changelog.sh`,
-      [headRef, baseRef, repoName, reverse],
-      options
-    )
+    // console.log('getChangelog ${src}/changelog.sh :>> ', `${src}/changelog.sh`);
+
+    // await _exec(
+    //   'https://github.com/metcalfc/changelog-generator/blob/main/dist/changelog.sh',
+    //   [headRef, baseRef, repoName, reverse],
+    //   options
+    // )
+
+    _actions_github__WEBPACK_IMPORTED_MODULE_2__.github.request('GET /repos/:owner/:repo/compare/:baseRef...:headRef', {
+      owner,
+      repo,
+      baseRef,
+      headRef,
+    }).then(res => {
+      console.log('GET /repos/:owner/:repo/compare/:baseRef...:headRef: res >>  ', res)
+      console.log('GET /repos/:owner/:repo/compare/:baseRef...:headRef: res.data >> ', res.data)
+    })
 
     if (output) {
       console.log(

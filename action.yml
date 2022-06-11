@@ -3,8 +3,27 @@ author: 'Vitalii Kalinbet <vitalii.kalinbet@gmail.com>'
 
 inputs:
   myToken:
-    description: 'GitHub token'
+    description: 'Your GITHUB_TOKEN'
+    default: ''
     required: true
+  pre-release: 
+    default: false
+    required: false
+  head-ref:
+    description: 'The name of the head reference'
+    default: ''
+    required: false
+  base-ref:
+    description: 'The name of the base reference'
+    default: ''
+    required: false
+  reverse:
+    description: 'Git log is chronological order by default. Set to true to reverse chronological order. '
+    default: 'false'
+    required: false
+outputs:
+  changelog:
+    description: 'Markdown formatted changelog'
 
 runs:
   using: 'node16'

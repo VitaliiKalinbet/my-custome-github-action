@@ -113,15 +113,15 @@
 }
 ```
 
-## octokit.rest.repos.listReleases
+## octokit.rest.repos.listCommits
 
 ```js
-    const listReleases = await octokit.rest.repos.listReleases({
+    const listCommits = await octokit.rest.repos.listCommits({
         context.repo.owner,
         context.repo.repo,
       });
 
-listReleases = {
+listCommits = {
   status: 200,
   url: 'https://api.github.com/repos/VitaliiKalinbet/my-custome-github-action/commits',
   headers: {
