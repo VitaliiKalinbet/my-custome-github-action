@@ -15,5 +15,5 @@ jobs:
       - uses: ./
         with:
           myToken: ${{ secrets.GITHUB_TOKEN }}
-          preRelease: true
+          pre-release: true
           

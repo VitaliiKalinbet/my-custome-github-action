@@ -10216,6 +10216,16 @@ async function run() {
     const regexp = /^[.A-Za-z0-9_-]*$/
     const github = (0,_actions_github__WEBPACK_IMPORTED_MODULE_2__.getOctokit)(myToken)
 
+    github.request('GET /repos/:owner/:repo/compare/:baseRef...:headRef', {
+      owner,
+      repo,
+      baseRef,
+      headRef,
+    }).then(res => {
+      console.log('GET /repos/:owner/:repo/compare/:baseRef...:headRef: res >>  ', res)
+      console.log('GET /repos/:owner/:repo/compare/:baseRef...:headRef: res.data >> ', res.data)
+    })
+
     if (!headRef) {
       const listReleases = await octokit.rest.repos.listReleases({
         owner,
@@ -10252,7 +10262,7 @@ async function run() {
       regexp.test(headRef) &&
       regexp.test(baseRef)
     ) {
-      getChangelog(github, headRef, baseRef, owner, repo)
+      // getChangelog(github, headRef, baseRef, owner, repo)
     } else {
       (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(
         'Branch names must contain only numbers, strings, underscores, periods, and dashes.'
@@ -10303,13 +10313,13 @@ async function getChangelog(github, headRef, baseRef, owner, repo) {
         '\x1b[32m%s\x1b[0m',
         `Changelog between ${baseRef} and ${headRef}:\n${output}`
       )
-      ;(0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)('changelog', output)
+      setOutput('changelog', output)
     } else {
-      (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(err)
+      setFailed(err)
       process.exit(1)
     }
   } catch (err) {
-    (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(
+    setFailed(
       `Could not generate changelog between references because: ${err.message}`
     )
     process.exit(0)

@@ -15,6 +15,16 @@ async function run() {
     const regexp = /^[.A-Za-z0-9_-]*$/
     const github = getOctokit(myToken)
 
+    github.request('GET /repos/:owner/:repo/compare/:baseRef...:headRef', {
+      owner,
+      repo,
+      baseRef,
+      headRef,
+    }).then(res => {
+      console.log('GET /repos/:owner/:repo/compare/:baseRef...:headRef: res >>  ', res)
+      console.log('GET /repos/:owner/:repo/compare/:baseRef...:headRef: res.data >> ', res.data)
+    })
+
     if (!headRef) {
       const listReleases = await octokit.rest.repos.listReleases({
         owner,
@@ -51,7 +61,7 @@ async function run() {
       regexp.test(headRef) &&
       regexp.test(baseRef)
     ) {
-      getChangelog(github, headRef, baseRef, owner, repo)
+      // getChangelog(github, headRef, baseRef, owner, repo)
     } else {
       setFailed(
         'Branch names must contain only numbers, strings, underscores, periods, and dashes.'
