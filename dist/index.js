@@ -10296,8 +10296,6 @@ async function getChangelog(github, headRef, baseRef, owner, repo) {
     }).then(res => {
       console.log('GET /repos/:owner/:repo/compare/:baseRef...:headRef: res >>  ', res)
       console.log('GET /repos/:owner/:repo/compare/:baseRef...:headRef: res.data >> ', res.data)
-
-      return toString(res.data);
     })
 
     if (output) {
