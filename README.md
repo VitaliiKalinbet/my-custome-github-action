@@ -1,5 +1,7 @@
 # my-custome-github-action
 
+action
+
 ## octokit.rest.repos.listReleases
 ```js
     const listReleases = await octokit.rest.repos.listReleases({
