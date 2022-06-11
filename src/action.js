@@ -1,6 +1,6 @@
 import { getInput, setFailed, setOutput } from '@actions/core'
 import { exec as _exec } from '@actions/exec'
-import { getOctokit, context, github } from '@actions/github'
+import { getOctokit, context } from '@actions/github'
 
 // const src = __dirname
 
@@ -10,10 +10,10 @@ async function run() {
     var baseRef = getInput('base-ref')
     const myToken = getInput('myToken')
     const preRelease = getInput('preRelease')
-    const reverse = getInput('reverse')
     const octokit = new getOctokit(myToken)
     const { owner, repo } = context.repo
     const regexp = /^[.A-Za-z0-9_-]*$/
+    const github = getOctokit(myToken)
 
     if (!headRef) {
       const listReleases = await octokit.rest.repos.listReleases({
@@ -51,7 +51,7 @@ async function run() {
       regexp.test(headRef) &&
       regexp.test(baseRef)
     ) {
-      getChangelog(headRef, baseRef, owner + '/' + repo, reverse)
+      getChangelog(github, headRef, baseRef, owner, repo)
     } else {
       setFailed(
         'Branch names must contain only numbers, strings, underscores, periods, and dashes.'
@@ -62,7 +62,7 @@ async function run() {
   }
 }
 
-async function getChangelog(headRef, baseRef, repoName, reverse) {
+async function getChangelog(github, headRef, baseRef, owner, repo) {
   try {
     let output = ''
     let err = ''
@@ -95,6 +95,8 @@ async function getChangelog(headRef, baseRef, repoName, reverse) {
     }).then(res => {
       console.log('GET /repos/:owner/:repo/compare/:baseRef...:headRef: res >>  ', res)
       console.log('GET /repos/:owner/:repo/compare/:baseRef...:headRef: res.data >> ', res.data)
+
+      return toString(res.data);
     })
 
     if (output) {
