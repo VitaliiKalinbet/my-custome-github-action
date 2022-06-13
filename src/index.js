@@ -66,9 +66,9 @@ async function getChangelog(octokit, fromTag, toTag, owner, repo) {
       )
     }
 
-    const output = commits.reduce((acc, commit) => acc += commit + '/n', '') || '';
+    const output = commits.reduce((acc, commit) => acc += commit + '\n', '') || '';
 
-    if (commits) {
+    if (output) {
       console.log(
         '\x1b[32m%s\x1b[0m',
         `Changelog between ${fromTag} and ${toTag}:\n${output}`
