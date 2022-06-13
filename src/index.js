@@ -60,7 +60,6 @@ async function createChangelog(octokit, fromTag, toTag, owner, repo) {
     let commits = []
     try {
       commits = await getCommitsDiff(octokit, owner, repo, fromTag, toTag)
-      console.log('commits :>> ', commits);
     } catch (error) {
       setFailed(
         `💥 Failed to retrieve - Invalid tag? - Because of: ${error}`
@@ -68,7 +67,7 @@ async function createChangelog(octokit, fromTag, toTag, owner, repo) {
     }
 
     if (commits) {
-      const changelog = getChangelog(commits, repo, fromTag, toTag);
+      const changelog = getChangelog(commits, owner, repo, fromTag, toTag);
       console.log(
         '\x1b[32m%s\x1b[0m',
         `Changelog between ${fromTag} and ${toTag}:\n${changelog}`
