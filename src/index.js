@@ -66,6 +66,8 @@ async function createChangelog(octokit, fromTag, toTag, owner, repo) {
       )
     }
 
+    console.log('commits :>> ', commits);
+
     if (commits) {
       const changelog = getChangelog(commits, owner, repo, fromTag, toTag);
       console.log(

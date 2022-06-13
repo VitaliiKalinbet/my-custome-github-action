@@ -15939,19 +15939,17 @@ async function getDiffRemote(octokit, owner, repo, base, head) {
   core.info(
     `ℹ️ Found ${commits.length} commits from the GitHub API for ${owner}/${repo}`
   );
-
-  const commit_sha = commits[0].sha || 'dsad'
-  const listAssociatedWithCommit = await octokit.rest.repos.listPullRequestsAssociatedWithCommit({
-    owner,
-    repo,
-    commit_sha,
-  });
-  console.log('listAssociatedWithCommit :>> ', listAssociatedWithCommit);
   
   return commits
     .filter((commit) => commit.sha)
-    .map((commit) => {
-      console.log('commit :>> ', commit);
+    .map(async (commit) => {
+      const commit_sha = commit.sha || ""
+      const listPullRequestsAssociatedWithCommit = await octokit.rest.repos.listPullRequestsAssociatedWithCommit({
+        owner,
+        repo,
+        commit_sha,
+      });
+
       return ({
         sha: commit.sha || "",
         summary: commit.commit.message.split("\n")[0],
@@ -15959,6 +15957,7 @@ async function getDiffRemote(octokit, owner, repo, base, head) {
         date: moment_default()(commit.commit.committer?.date),
         author: commit.commit.author?.name || "",
         prNumber: undefined,
+        listPullRequestsAssociatedWithCommit,
       })
     });
 }
@@ -16197,6 +16196,8 @@ async function createChangelog(octokit, fromTag, toTag, owner, repo) {
         `💥 Failed to retrieve - Invalid tag? - Because of: ${error}`
       )
     }
+
+    console.log('commits :>> ', commits);
 
     if (commits) {
       const changelog = getChangelog(commits, owner, repo, fromTag, toTag);
