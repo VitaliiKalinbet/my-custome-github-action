@@ -1,4 +1,4 @@
-export function getChangelog(commits, fromTag, toTag) {
+export function getChangelog(commits, repo, fromTag, toTag) {
   let newChangelog = `# Version ${toTag} (${
     new Date().toISOString().split("T")[0]
   })\n`;
@@ -9,35 +9,39 @@ export function getChangelog(commits, fromTag, toTag) {
   const chores = [];
   const other = [];
 
-  const src = __dirname
-
   commits.forEach((commit) => {
     if (commit.message.startsWith("feat")) {
       features.push(
         `* ${commit.message} ([${commit.sha.substring(
           0,
           6
-        )}](${src}/commit/${
+        )}](${repo}/commit/${
           commit.sha
         }))\n`
       );
-    } else if (commit.message.startsWith("chore")) {
+
+      return;
+    } 
+
+    if (commit.message.startsWith("chore")) {
       chores.push(
         `* ${commit.message} ([${commit.sha.substring(
           0,
           6
-        )}](${src}/commit/${
+        )}](${repo}/commit/${
           commit.sha
         }))\n`
       );
-    } else {
-        other.push(`* ${commit.message} ([${commit.sha.substring(
-            0,
-            6
-          )}](${src}/commit/${
-            commit.sha
-          }))\n`);
-    }
+
+      return;
+    } 
+
+    other.push(`* ${commit.message} ([${commit.sha.substring(
+        0,
+        6
+      )}](${repo}/commit/${
+        commit.sha
+      }))\n`);
   });
 
   if (features.length) {
