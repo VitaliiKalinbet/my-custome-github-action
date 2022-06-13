@@ -15993,7 +15993,7 @@ async function run() {
     const myToken = (0,core.getInput)('myToken')
     const octokit = new github.getOctokit(myToken)
     const { owner, repo } = github.context.repo
-    const regexp = /^[.A-Za-z0-9_-]*$/
+    // const regexp = /^[.A-Za-z0-9_-]*$/
 
     if (!fromTag) {
       const latestRelease = await octokit.rest.repos.getLatestRelease({
@@ -16001,6 +16001,7 @@ async function run() {
         repo: repo
       })
       if (latestRelease) {
+        console.log('latestRelease.data :>> ', latestRelease.data);
         fromTag = latestRelease.data.tag_name
       } else {
         (0,core.setFailed)(
@@ -16014,7 +16015,7 @@ async function run() {
       //   owner,
       //   repo,
       // });
-
+      console.log('context :>> ', github.context);
       fromTag = github.context.sha
 
       // if (preRelease && !toTag) {
@@ -16027,16 +16028,18 @@ async function run() {
 
     if (
       !!fromTag &&
-      !!toTag &&
-      regexp.test(fromTag) &&
-      regexp.test(toTag)
+      !!toTag 
+      // &&
+      // regexp.test(fromTag) &&
+      // regexp.test(toTag)
     ) {
       getChangelog(fromTag, toTag, owner, repo)
-    } else {
-      (0,core.setFailed)(
-        'Branch names must contain only numbers, strings, underscores, periods, and dashes.'
-      )
-    }
+    } 
+    // else {
+    //   setFailed(
+    //     'Branch names must contain only numbers, strings, underscores, periods, and dashes.'
+    //   )
+    // }
   } catch (error) {
     (0,core.setFailed)(error.message)
   }
