@@ -31,7 +31,7 @@ async function getDiffRemote(octokit, owner, repo, base, head) {
 
   return commits
     .filter((commit) => commit.sha)
-    .map(async (commit) => ({
+    .map((commit) => ({
       sha: commit.sha || "",
       summary: commit.commit.message.split("\n")[0],
       message: commit.commit.message,
