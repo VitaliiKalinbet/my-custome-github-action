@@ -1,7 +1,7 @@
 import { getInput, setFailed, setOutput } from '@actions/core'
 import { exec as _exec } from '@actions/exec'
 import { getOctokit, context } from '@actions/github'
-import { Commits } from './utils/getCommits'
+import { getCommitsDiff } from './utils/getCommits'
 
 async function run() {
   try {
@@ -56,10 +56,10 @@ async function run() {
 
 async function getChangelog(octokit, fromTag, toTag, owner, repo) {
   try {
-    const commitsApi = new Commits(octokit)
     let commits = []
     try {
-      commits = await commitsApi.getDiff(owner, repo, fromTag, toTag)
+      commits = getCommitsDiff(octokit, owner, repo, fromTag, toTag)
+      console.log('commits :>> ', commits);
     } catch (error) {
       setFailed(
         `💥 Failed to retrieve - Invalid tag? - Because of: ${error}`
