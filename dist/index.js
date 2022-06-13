@@ -15940,6 +15940,8 @@ async function getDiffRemote(octokit, owner, repo, base, head) {
     `ℹ️ Found ${commits.length} commits from the GitHub API for ${owner}/${repo}`
   );
 
+  console.log('getDiffRemote commits :>> ', commits);
+  
   return commits
     .filter((commit) => commit.sha)
     .map((commit) => ({
@@ -15975,6 +15977,7 @@ function sortCommits(commits) {
 
   return commitsResult;
 }
+
 ;// CONCATENATED MODULE: ./src/utils/getChangelog.js
 function getChangelog(commits, owner, repo, fromTag, toTag) {
   let newChangelog = `# Version ${createChangelogTagLink(
@@ -16016,24 +16019,26 @@ function getChangelog(commits, owner, repo, fromTag, toTag) {
       createChangelogLine(tests, commit, owner, repo);
     } else if (commit.message.startsWith("chore")) {
       createChangelogLine(chores, commit, owner, repo);
-    } else if (commit.message.includes('[skip bot]')) {
+    } else if (commit.message.includes("[skip bot]")) {
+      return;
+    } else if (commit.message.includes("Merge branch")) {
       return;
     } else {
       createChangelogLine(others, commit, owner, repo);
     }
   });
 
-  if (features.length) {
-    newChangelog += `## Feature${features.length === 1 ? "" : "s"}\n`;
-    features.forEach((feature) => {
+  if (fixes.length) {
+    newChangelog += `## Bug fix${fixes.length === 1 ? "" : "es"}\n`;
+    fixes.forEach((feature) => {
       newChangelog += feature;
     });
     newChangelog += "\n";
   }
 
-  if (fixes.length) {
-    newChangelog += `## Bug fix${fixes.length === 1 ? "" : "es"}\n`;
-    fixes.forEach((feature) => {
+  if (features.length) {
+    newChangelog += `## Feature${features.length === 1 ? "" : "s"}\n`;
+    features.forEach((feature) => {
       newChangelog += feature;
     });
     newChangelog += "\n";
@@ -16064,7 +16069,7 @@ function getChangelog(commits, owner, repo, fromTag, toTag) {
   }
 
   if (performances.length) {
-    newChangelog += `## Perfomance change${
+    newChangelog += `## Perfomance Improvement${
       performances.length === 1 ? "" : "s"
     }\n`;
     performances.forEach((feature) => {

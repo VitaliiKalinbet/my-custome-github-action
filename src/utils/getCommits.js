@@ -29,6 +29,8 @@ async function getDiffRemote(octokit, owner, repo, base, head) {
     `ℹ️ Found ${commits.length} commits from the GitHub API for ${owner}/${repo}`
   );
 
+  console.log('getDiffRemote commits :>> ', commits);
+  
   return commits
     .filter((commit) => commit.sha)
     .map((commit) => ({
