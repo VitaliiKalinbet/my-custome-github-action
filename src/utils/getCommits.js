@@ -28,27 +28,18 @@ async function getDiffRemote(octokit, owner, repo, base, head) {
   core.info(
     `ℹ️ Found ${commits.length} commits from the GitHub API for ${owner}/${repo}`
   );
-  
+
   return commits
     .filter((commit) => commit.sha)
-    .map(async (commit) => {
-      const commit_sha = commit.sha || ""
-      const listPullRequestsAssociatedWithCommit = await octokit.rest.repos.listPullRequestsAssociatedWithCommit({
-        owner,
-        repo,
-        commit_sha,
-      });
-
-      return ({
-        sha: commit.sha || "",
-        summary: commit.commit.message.split("\n")[0],
-        message: commit.commit.message,
-        date: moment(commit.commit.committer?.date),
-        author: commit.commit.author?.name || "",
-        prNumber: undefined,
-        listPullRequestsAssociatedWithCommit,
-      })
-    });
+    .map(async (commit) => ({
+      sha: commit.sha || "",
+      summary: commit.commit.message.split("\n")[0],
+      message: commit.commit.message,
+      date: moment(commit.commit.committer?.date),
+      author: commit.commit.author?.name || "",
+      prNumber: undefined,
+      listPullRequestsAssociatedWithCommit,
+    }));
 }
 
 function sortCommits(commits) {
