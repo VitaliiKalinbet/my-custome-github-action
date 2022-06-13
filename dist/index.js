@@ -15923,7 +15923,7 @@ async function getDiffRemote(octokit, owner, repo, base, head) {
   let commits = [];
   let compareHead = head;
   while (true) {
-    const compareResult = await octokit.repos.compareCommits({
+    const compareResult = await octokit.rest.repos.compareCommits({
       owner,
       repo,
       base,
