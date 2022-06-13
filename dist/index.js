@@ -15917,13 +15917,13 @@ async function getCommitsDiff(octokit, owner, repo, base, head) {
   return sortCommits(commits);
 }
 
-function getDiffRemote(octokit, owner, repo, base, head) {
+async function getDiffRemote(octokit, owner, repo, base, head) {
   // Fetch comparisons recursively until we don't find any commits
   // This is because the GitHub API limits the number of commits returned in a single response.
   let commits = [];
   let compareHead = head;
   while (true) {
-    const compareResult = octokit.repos.compareCommits({
+    const compareResult = await octokit.repos.compareCommits({
       owner,
       repo,
       base,
