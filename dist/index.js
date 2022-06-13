@@ -16001,7 +16001,6 @@ async function run() {
         repo: repo
       })
       if (latestRelease) {
-        console.log('latestRelease.data :>> ', latestRelease.data);
         fromTag = latestRelease.data.tag_name
       } else {
         (0,core.setFailed)(
@@ -16011,16 +16010,12 @@ async function run() {
     }
 
     if (!toTag) {
-      // const listReleases = await octokit.rest.repos.listReleases({
-      //   owner,
-      //   repo,
-      // });
+      const listReleases = await octokit.rest.repos.listReleases({
+        owner,
+        repo,
+      });
       console.log('context :>> ', github.context);
-      fromTag = github.context.sha
-
-      // if (preRelease && !toTag) {
-      //   toTag = listReleases?.data[0]?.tag_name || ''
-      // }
+      toTag = listReleases?.data[0]?.tag_name || github.context.sha
     }
 
     console.log(`fromTag: ${fromTag}`)
