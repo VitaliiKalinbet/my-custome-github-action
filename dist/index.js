@@ -15949,7 +15949,6 @@ async function getDiffRemote(octokit, owner, repo, base, head) {
       date: moment_default()(commit.commit.committer?.date),
       author: commit.commit.author?.name || "",
       prNumber: undefined,
-      listPullRequestsAssociatedWithCommit,
     }));
 }
 
