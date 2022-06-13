@@ -15975,7 +15975,76 @@ function sortCommits(commits) {
 
   return commitsResult;
 }
+;// CONCATENATED MODULE: ./src/utils/getChangelog.js
+function getChangelog(commits, fromTag, toTag) {
+  let newChangelog = `# Version ${toTag} (${
+    new Date().toISOString().split("T")[0]
+  })\n`;
+
+  newChangelog += `Commits list create from latest release version ${fromTag}, to version ${toTag}\n\n`;
+
+  const features = [];
+  const chores = [];
+  const other = [];
+
+  commits.forEach((commit) => {
+    if (commit.message.startsWith("feat")) {
+      features.push(
+        `* ${commit.message.replace("feat", "")} ([${commit.sha.substring(
+          0,
+          6
+        )}](https://github.com/jackyef/changelog-generator/commit/${
+          commit.sha
+        }))\n`
+      );
+    } else if (commit.message.startsWith("chore")) {
+      chores.push(
+        `* ${commit.message.replace("chore: ", "")} ([${commit.sha.substring(
+          0,
+          6
+        )}](https://github.com/jackyef/changelog-generator/commit/${
+          commit.sha
+        }))\n`
+      );
+    } else {
+        other.push(`* ${commit.message.replace("chore: ", "")} ([${commit.sha.substring(
+            0,
+            6
+          )}](https://github.com/jackyef/changelog-generator/commit/${
+            commit.sha
+          }))\n`);
+    }
+  });
+
+  if (features.length) {
+    newChangelog += `## Features\n`;
+    features.forEach((feature) => {
+      newChangelog += feature;
+    });
+    newChangelog += "\n";
+  }
+
+  if (chores.length) {
+    newChangelog += `## Chores\n`;
+    chores.forEach((chore) => {
+      newChangelog += chore;
+    });
+    newChangelog += "\n";
+  }
+
+  if (other.length) {
+    newChangelog += `## Other changes\n`;
+    chores.forEach((other) => {
+      newChangelog += other;
+    });
+    newChangelog += "\n";
+  }
+
+  return newChangelog;
+}
+
 ;// CONCATENATED MODULE: ./src/index.js
+
 
 
 
@@ -16021,7 +16090,7 @@ async function run() {
       regexp.test(fromTag) &&
       regexp.test(toTag)
     ) {
-      getChangelog(octokit, fromTag, toTag, owner, repo)
+      createChangelog(octokit, fromTag, toTag, owner, repo)
     } else {
       (0,core.setFailed)(
         'Branch names must contain only numbers, strings, underscores, periods, and dashes.'
@@ -16032,7 +16101,7 @@ async function run() {
   }
 }
 
-async function getChangelog(octokit, fromTag, toTag, owner, repo) {
+async function createChangelog(octokit, fromTag, toTag, owner, repo) {
   try {
     let commits = []
     try {
@@ -16045,12 +16114,12 @@ async function getChangelog(octokit, fromTag, toTag, owner, repo) {
     }
 
     if (commits) {
-      const output = commits.reduce((acc, commit) => acc += commit + '\n', '') || '';
+      const changelog = getChangelog(commits, fromTag, toTag);
       console.log(
         '\x1b[32m%s\x1b[0m',
-        `Changelog between ${fromTag} and ${toTag}:\n${output}`
+        `Changelog between ${fromTag} and ${toTag}:\n${changelog}`
       )
-      ;(0,core.setOutput)('changelog', output)
+      ;(0,core.setOutput)('changelog', changelog)
     } else {
       (0,core.setFailed)(err)
       process.exit(1)

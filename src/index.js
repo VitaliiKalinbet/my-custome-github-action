@@ -2,6 +2,7 @@ import { getInput, setFailed, setOutput } from '@actions/core'
 import { exec as _exec } from '@actions/exec'
 import { getOctokit, context } from '@actions/github'
 import { getCommitsDiff } from './utils/getCommits'
+import { getChangelog } from './utils/getChangelog'
 
 async function run() {
   try {
@@ -43,7 +44,7 @@ async function run() {
       regexp.test(fromTag) &&
       regexp.test(toTag)
     ) {
-      getChangelog(octokit, fromTag, toTag, owner, repo)
+      createChangelog(octokit, fromTag, toTag, owner, repo)
     } else {
       setFailed(
         'Branch names must contain only numbers, strings, underscores, periods, and dashes.'
@@ -54,7 +55,7 @@ async function run() {
   }
 }
 
-async function getChangelog(octokit, fromTag, toTag, owner, repo) {
+async function createChangelog(octokit, fromTag, toTag, owner, repo) {
   try {
     let commits = []
     try {
@@ -67,12 +68,12 @@ async function getChangelog(octokit, fromTag, toTag, owner, repo) {
     }
 
     if (commits) {
-      const output = commits.reduce((acc, commit) => acc += commit + '\n', '') || '';
+      const changelog = getChangelog(commits, fromTag, toTag);
       console.log(
         '\x1b[32m%s\x1b[0m',
-        `Changelog between ${fromTag} and ${toTag}:\n${output}`
+        `Changelog between ${fromTag} and ${toTag}:\n${changelog}`
       )
-      setOutput('changelog', output)
+      setOutput('changelog', changelog)
     } else {
       setFailed(err)
       process.exit(1)
