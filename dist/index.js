@@ -15940,18 +15940,27 @@ async function getDiffRemote(octokit, owner, repo, base, head) {
     `ℹ️ Found ${commits.length} commits from the GitHub API for ${owner}/${repo}`
   );
 
-  console.log('getDiffRemote commits :>> ', commits);
+  const commit_sha = commits[0].sha || 'dsad'
+  const listAssociatedWithCommit = await octokit.rest.repos.listPullRequestsAssociatedWithCommit({
+    owner,
+    repo,
+    commit_sha,
+  });
+  console.log('listAssociatedWithCommit :>> ', listAssociatedWithCommit);
   
   return commits
     .filter((commit) => commit.sha)
-    .map((commit) => ({
-      sha: commit.sha || "",
-      summary: commit.commit.message.split("\n")[0],
-      message: commit.commit.message,
-      date: moment_default()(commit.commit.committer?.date),
-      author: commit.commit.author?.name || "",
-      prNumber: undefined,
-    }));
+    .map((commit) => {
+      console.log('commit :>> ', commit);
+      return ({
+        sha: commit.sha || "",
+        summary: commit.commit.message.split("\n")[0],
+        message: commit.commit.message,
+        date: moment_default()(commit.commit.committer?.date),
+        author: commit.commit.author?.name || "",
+        prNumber: undefined,
+      })
+    });
 }
 
 function sortCommits(commits) {
