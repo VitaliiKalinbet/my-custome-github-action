@@ -3,11 +3,13 @@ export function getChangelog(commits, fromTag, toTag) {
     new Date().toISOString().split("T")[0]
   })\n`;
 
-  newChangelog += `Commits list create from latest release version ${fromTag}, to version ${toTag}\n\n`;
+  newChangelog += `### Commits list create from version ${fromTag}, to version ${toTag}\n\n`;
 
   const features = [];
   const chores = [];
   const other = [];
+
+  const src = __dirname
 
   commits.forEach((commit) => {
     if (commit.message.startsWith("feat")) {
@@ -15,7 +17,7 @@ export function getChangelog(commits, fromTag, toTag) {
         `* ${commit.message} ([${commit.sha.substring(
           0,
           6
-        )}](https://github.com/jackyef/changelog-generator/commit/${
+        )}](${src}/commit/${
           commit.sha
         }))\n`
       );
@@ -24,7 +26,7 @@ export function getChangelog(commits, fromTag, toTag) {
         `* ${commit.message} ([${commit.sha.substring(
           0,
           6
-        )}](https://github.com/jackyef/changelog-generator/commit/${
+        )}](${src}/commit/${
           commit.sha
         }))\n`
       );
@@ -32,7 +34,7 @@ export function getChangelog(commits, fromTag, toTag) {
         other.push(`* ${commit.message} ([${commit.sha.substring(
             0,
             6
-          )}](https://github.com/jackyef/changelog-generator/commit/${
+          )}](${src}/commit/${
             commit.sha
           }))\n`);
     }
