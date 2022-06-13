@@ -16014,7 +16014,6 @@ async function run() {
         owner,
         repo,
       });
-      console.log('context :>> ', github.context);
       toTag = listReleases?.data[0]?.tag_name || github.context.sha
     }
 
@@ -16023,24 +16022,22 @@ async function run() {
 
     if (
       !!fromTag &&
-      !!toTag 
-      // &&
-      // regexp.test(fromTag) &&
-      // regexp.test(toTag)
+      !!toTag &&
+      regexp.test(fromTag) &&
+      regexp.test(toTag)
     ) {
-      getChangelog(fromTag, toTag, owner, repo)
-    } 
-    // else {
-    //   setFailed(
-    //     'Branch names must contain only numbers, strings, underscores, periods, and dashes.'
-    //   )
-    // }
+      getChangelog(octokit, fromTag, toTag, owner, repo)
+    } else {
+      (0,core.setFailed)(
+        'Branch names must contain only numbers, strings, underscores, periods, and dashes.'
+      )
+    }
   } catch (error) {
     (0,core.setFailed)(error.message)
   }
 }
 
-async function getChangelog(fromTag, toTag, owner, repo) {
+async function getChangelog(octokit, fromTag, toTag, owner, repo) {
   try {
     const commitsApi = new Commits(octokit)
     let commits = []
