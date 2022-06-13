@@ -1,5 +1,7 @@
 # my-custome-github-action
 
+action
+
 
 ## octokit.rest.repos.listReleases
 ```js
