@@ -15990,7 +15990,7 @@ function getChangelog(commits, fromTag, toTag) {
   commits.forEach((commit) => {
     if (commit.message.startsWith("feat")) {
       features.push(
-        `* ${commit.message.replace("feat", "")} ([${commit.sha.substring(
+        `* ${commit.message} ([${commit.sha.substring(
           0,
           6
         )}](https://github.com/jackyef/changelog-generator/commit/${
@@ -15999,7 +15999,7 @@ function getChangelog(commits, fromTag, toTag) {
       );
     } else if (commit.message.startsWith("chore")) {
       chores.push(
-        `* ${commit.message.replace("chore: ", "")} ([${commit.sha.substring(
+        `* ${commit.message} ([${commit.sha.substring(
           0,
           6
         )}](https://github.com/jackyef/changelog-generator/commit/${
@@ -16007,7 +16007,7 @@ function getChangelog(commits, fromTag, toTag) {
         }))\n`
       );
     } else {
-        other.push(`* ${commit.message.replace("chore: ", "")} ([${commit.sha.substring(
+        other.push(`* ${commit.message} ([${commit.sha.substring(
             0,
             6
           )}](https://github.com/jackyef/changelog-generator/commit/${
