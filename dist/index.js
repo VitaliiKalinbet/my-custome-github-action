@@ -16036,7 +16036,7 @@ async function getChangelog(octokit, fromTag, toTag, owner, repo) {
   try {
     let commits = []
     try {
-      commits = getCommitsDiff(octokit, owner, repo, fromTag, toTag)
+      commits = await getCommitsDiff(octokit, owner, repo, fromTag, toTag)
       console.log('commits :>> ', commits);
     } catch (error) {
       (0,core.setFailed)(
@@ -16044,7 +16044,7 @@ async function getChangelog(octokit, fromTag, toTag, owner, repo) {
       )
     }
 
-    const output = commits.reduce((acc, commit) => acc += commit + '/n', '');
+    const output = commits.reduce((acc, commit) => acc += commit + '/n', '') || '';
 
     if (commits) {
       console.log(
