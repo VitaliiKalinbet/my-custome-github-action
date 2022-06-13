@@ -15993,7 +15993,7 @@ async function run() {
     const myToken = (0,core.getInput)('myToken')
     const octokit = new github.getOctokit(myToken)
     const { owner, repo } = github.context.repo
-    // const regexp = /^[.A-Za-z0-9_-]*$/
+    const regexp = /^[.A-Za-z0-9_-]*$/
 
     if (!fromTag) {
       const latestRelease = await octokit.rest.repos.getLatestRelease({

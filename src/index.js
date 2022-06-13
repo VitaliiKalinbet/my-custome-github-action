@@ -10,7 +10,7 @@ async function run() {
     const myToken = getInput('myToken')
     const octokit = new getOctokit(myToken)
     const { owner, repo } = context.repo
-    // const regexp = /^[.A-Za-z0-9_-]*$/
+    const regexp = /^[.A-Za-z0-9_-]*$/
 
     if (!fromTag) {
       const latestRelease = await octokit.rest.repos.getLatestRelease({
