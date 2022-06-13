@@ -16049,6 +16049,8 @@ async function getChangelog(octokit, fromTag, toTag, owner, repo) {
       )
     }
 
+    const output = commits.reduce((acc, commit) => acc += commit + '/n', '');
+
     if (commits) {
       console.log(
         '\x1b[32m%s\x1b[0m',
