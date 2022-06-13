@@ -1,5 +1,193 @@
 # my-custome-github-action
 
+## octokit.rest.repos.compareCommits
+```js
+import { getOctokit } from '@actions/github'
+
+const GITHUB_TOKEN = getInput('myToken')
+const octokit = new getOctokit(GITHUB_TOKEN)
+
+const compareCommits = await octokit.rest.repos.compareCommits({
+  owner,
+  repo,
+  base,
+  head: compareHead,
+});
+
+compareCommits =  [
+  {
+    sha: 'f366b62c203422c92b0cd7e9ec4cccaa7f14f5c4',
+    node_id: 'C_kwDOHey-3toAKGYzNjZiNjJjMjAzNDIyYzkyYjBjZDdlOWVjNGNjY2FhN2YxNGY1YzQ',
+    commit: {
+      author: [Object],
+      committer: [Object],
+      message: 'feat: change custome action',
+      tree: [Object],
+      url: 'https://api.github.com/repos/VitaliiKalinbet/my-custome-github-action/git/commits/f366b62c203422c92b0cd7e9ec4cccaa7f14f5c4',
+      comment_count: 0,
+      verification: [Object]
+    },
+    url: 'https://api.github.com/repos/VitaliiKalinbet/my-custome-github-action/commits/f366b62c203422c92b0cd7e9ec4cccaa7f14f5c4',
+    html_url: 'https://github.com/VitaliiKalinbet/my-custome-github-action/commit/f366b62c203422c92b0cd7e9ec4cccaa7f14f5c4',
+    comments_url: 'https://api.github.com/repos/VitaliiKalinbet/my-custome-github-action/commits/f366b62c203422c92b0cd7e9ec4cccaa7f14f5c4/comments',
+    author: {
+      login: 'VitaliiKalinbet',
+      id: 43337844,
+      node_id: 'MDQ6VXNlcjQzMzM3ODQ0',
+      avatar_url: 'https://avatars.githubusercontent.com/u/43337844?v=4',
+      gravatar_id: '',
+      url: 'https://api.github.com/users/VitaliiKalinbet',
+      html_url: 'https://github.com/VitaliiKalinbet',
+      followers_url: 'https://api.github.com/users/VitaliiKalinbet/followers',
+      following_url: 'https://api.github.com/users/VitaliiKalinbet/following{/other_user}',
+      gists_url: 'https://api.github.com/users/VitaliiKalinbet/gists{/gist_id}',
+      starred_url: 'https://api.github.com/users/VitaliiKalinbet/starred{/owner}{/repo}',
+      subscriptions_url: 'https://api.github.com/users/VitaliiKalinbet/subscriptions',
+      organizations_url: 'https://api.github.com/users/VitaliiKalinbet/orgs',
+      repos_url: 'https://api.github.com/users/VitaliiKalinbet/repos',
+      events_url: 'https://api.github.com/users/VitaliiKalinbet/events{/privacy}',
+      received_events_url: 'https://api.github.com/users/VitaliiKalinbet/received_events',
+      type: 'User',
+      site_admin: false
+    },
+    committer: {
+      login: 'VitaliiKalinbet',
+      id: 43337844,
+      node_id: 'MDQ6VXNlcjQzMzM3ODQ0',
+      avatar_url: 'https://avatars.githubusercontent.com/u/43337844?v=4',
+      gravatar_id: '',
+      url: 'https://api.github.com/users/VitaliiKalinbet',
+      html_url: 'https://github.com/VitaliiKalinbet',
+      followers_url: 'https://api.github.com/users/VitaliiKalinbet/followers',
+      following_url: 'https://api.github.com/users/VitaliiKalinbet/following{/other_user}',
+      gists_url: 'https://api.github.com/users/VitaliiKalinbet/gists{/gist_id}',
+      starred_url: 'https://api.github.com/users/VitaliiKalinbet/starred{/owner}{/repo}',
+      subscriptions_url: 'https://api.github.com/users/VitaliiKalinbet/subscriptions',
+      organizations_url: 'https://api.github.com/users/VitaliiKalinbet/orgs',
+      repos_url: 'https://api.github.com/users/VitaliiKalinbet/repos',
+      events_url: 'https://api.github.com/users/VitaliiKalinbet/events{/privacy}',
+      received_events_url: 'https://api.github.com/users/VitaliiKalinbet/received_events',
+      type: 'User',
+      site_admin: false
+    },
+    parents: [ [Object] ]
+  },
+  {
+    sha: 'c4063c3022b5dab405d1fe0c58a780692ca4fcdb',
+    node_id: 'C_kwDOHey-3toAKGM0MDYzYzMwMjJiNWRhYjQwNWQxZmUwYzU4YTc4MDY5MmNhNGZjZGI',
+    commit: {
+      author: [Object],
+      committer: [Object],
+      message: "Merge branch 'main' of github.com:VitaliiKalinbet/my-custome-github-action into main",
+      tree: [Object],
+      url: 'https://api.github.com/repos/VitaliiKalinbet/my-custome-github-action/git/commits/c4063c3022b5dab405d1fe0c58a780692ca4fcdb',
+      comment_count: 0,
+      verification: [Object]
+    },
+    url: 'https://api.github.com/repos/VitaliiKalinbet/my-custome-github-action/commits/c4063c3022b5dab405d1fe0c58a780692ca4fcdb',
+    html_url: 'https://github.com/VitaliiKalinbet/my-custome-github-action/commit/c4063c3022b5dab405d1fe0c58a780692ca4fcdb',
+    comments_url: 'https://api.github.com/repos/VitaliiKalinbet/my-custome-github-action/commits/c4063c3022b5dab405d1fe0c58a780692ca4fcdb/comments',
+    author: {
+      login: 'VitaliiKalinbet',
+      id: 43337844,
+      node_id: 'MDQ6VXNlcjQzMzM3ODQ0',
+      avatar_url: 'https://avatars.githubusercontent.com/u/43337844?v=4',
+      gravatar_id: '',
+      url: 'https://api.github.com/users/VitaliiKalinbet',
+      html_url: 'https://github.com/VitaliiKalinbet',
+      followers_url: 'https://api.github.com/users/VitaliiKalinbet/followers',
+      following_url: 'https://api.github.com/users/VitaliiKalinbet/following{/other_user}',
+      gists_url: 'https://api.github.com/users/VitaliiKalinbet/gists{/gist_id}',
+      starred_url: 'https://api.github.com/users/VitaliiKalinbet/starred{/owner}{/repo}',
+      subscriptions_url: 'https://api.github.com/users/VitaliiKalinbet/subscriptions',
+      organizations_url: 'https://api.github.com/users/VitaliiKalinbet/orgs',
+      repos_url: 'https://api.github.com/users/VitaliiKalinbet/repos',
+      events_url: 'https://api.github.com/users/VitaliiKalinbet/events{/privacy}',
+      received_events_url: 'https://api.github.com/users/VitaliiKalinbet/received_events',
+      type: 'User',
+      site_admin: false
+    },
+    committer: {
+      login: 'VitaliiKalinbet',
+      id: 43337844,
+      node_id: 'MDQ6VXNlcjQzMzM3ODQ0',
+      avatar_url: 'https://avatars.githubusercontent.com/u/43337844?v=4',
+      gravatar_id: '',
+      url: 'https://api.github.com/users/VitaliiKalinbet',
+      html_url: 'https://github.com/VitaliiKalinbet',
+      followers_url: 'https://api.github.com/users/VitaliiKalinbet/followers',
+      following_url: 'https://api.github.com/users/VitaliiKalinbet/following{/other_user}',
+      gists_url: 'https://api.github.com/users/VitaliiKalinbet/gists{/gist_id}',
+      starred_url: 'https://api.github.com/users/VitaliiKalinbet/starred{/owner}{/repo}',
+      subscriptions_url: 'https://api.github.com/users/VitaliiKalinbet/subscriptions',
+      organizations_url: 'https://api.github.com/users/VitaliiKalinbet/orgs',
+      repos_url: 'https://api.github.com/users/VitaliiKalinbet/repos',
+      events_url: 'https://api.github.com/users/VitaliiKalinbet/events{/privacy}',
+      received_events_url: 'https://api.github.com/users/VitaliiKalinbet/received_events',
+      type: 'User',
+      site_admin: false
+    },
+    parents: [ [Object], [Object] ]
+  },
+  {
+    sha: '216aea8f6472a552f4457f1c33b1bc8cd950cf53',
+    node_id: 'C_kwDOHey-3toAKDIxNmFlYThmNjQ3MmE1NTJmNDQ1N2YxYzMzYjFiYzhjZDk1MGNmNTM',
+    commit: {
+      author: [Object],
+      committer: [Object],
+      message: 'Update README.md',
+      tree: [Object],
+      url: 'https://api.github.com/repos/VitaliiKalinbet/my-custome-github-action/git/commits/216aea8f6472a552f4457f1c33b1bc8cd950cf53',
+      comment_count: 0,
+      verification: [Object]
+    },
+    url: 'https://api.github.com/repos/VitaliiKalinbet/my-custome-github-action/commits/216aea8f6472a552f4457f1c33b1bc8cd950cf53',
+    html_url: 'https://github.com/VitaliiKalinbet/my-custome-github-action/commit/216aea8f6472a552f4457f1c33b1bc8cd950cf53',
+    comments_url: 'https://api.github.com/repos/VitaliiKalinbet/my-custome-github-action/commits/216aea8f6472a552f4457f1c33b1bc8cd950cf53/comments',
+    author: {
+      login: 'VitaliiKalinbet',
+      id: 43337844,
+      node_id: 'MDQ6VXNlcjQzMzM3ODQ0',
+      avatar_url: 'https://avatars.githubusercontent.com/u/43337844?v=4',
+      gravatar_id: '',
+      url: 'https://api.github.com/users/VitaliiKalinbet',
+      html_url: 'https://github.com/VitaliiKalinbet',
+      followers_url: 'https://api.github.com/users/VitaliiKalinbet/followers',
+      following_url: 'https://api.github.com/users/VitaliiKalinbet/following{/other_user}',
+      gists_url: 'https://api.github.com/users/VitaliiKalinbet/gists{/gist_id}',
+      starred_url: 'https://api.github.com/users/VitaliiKalinbet/starred{/owner}{/repo}',
+      subscriptions_url: 'https://api.github.com/users/VitaliiKalinbet/subscriptions',
+      organizations_url: 'https://api.github.com/users/VitaliiKalinbet/orgs',
+      repos_url: 'https://api.github.com/users/VitaliiKalinbet/repos',
+      events_url: 'https://api.github.com/users/VitaliiKalinbet/events{/privacy}',
+      received_events_url: 'https://api.github.com/users/VitaliiKalinbet/received_events',
+      type: 'User',
+      site_admin: false
+    },
+    committer: {
+      login: 'web-flow',
+      id: 19864447,
+      node_id: 'MDQ6VXNlcjE5ODY0NDQ3',
+      avatar_url: 'https://avatars.githubusercontent.com/u/19864447?v=4',
+      gravatar_id: '',
+      url: 'https://api.github.com/users/web-flow',
+      html_url: 'https://github.com/web-flow',
+      followers_url: 'https://api.github.com/users/web-flow/followers',
+      following_url: 'https://api.github.com/users/web-flow/following{/other_user}',
+      gists_url: 'https://api.github.com/users/web-flow/gists{/gist_id}',
+      starred_url: 'https://api.github.com/users/web-flow/starred{/owner}{/repo}',
+      subscriptions_url: 'https://api.github.com/users/web-flow/subscriptions',
+      organizations_url: 'https://api.github.com/users/web-flow/orgs',
+      repos_url: 'https://api.github.com/users/web-flow/repos',
+      events_url: 'https://api.github.com/users/web-flow/events{/privacy}',
+      received_events_url: 'https://api.github.com/users/web-flow/received_events',
+      type: 'User',
+      site_admin: false
+    },
+    parents: [ [Object] ]
+  }, ... ]
+
+```
 
 ## octokit.rest.repos.listReleases
 ```js
