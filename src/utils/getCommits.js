@@ -2,7 +2,7 @@ import * as core from "@actions/core";
 import moment from "moment";
 
 export async function getCommitsDiff(octokit, owner, repo, base, head) {
-  const commits = await getDiffRemote(octokit, owner, repo, head, base);
+  const commits = await getDiffRemote(octokit, owner, repo, base, head);
   return sortCommits(commits);
 }
 
