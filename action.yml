@@ -6,21 +6,15 @@ inputs:
     description: 'Your GITHUB_TOKEN'
     default: ''
     required: true
-  pre-release: 
-    default: false
-    required: false
-  head-ref:
-    description: 'The name of the head reference'
+  fromTag:
+    description: 'The name of the release with status latest, when release branch merged in master'
     default: ''
     required: false
-  base-ref:
-    description: 'The name of the base reference'
+  toTag:
+    description: 'The name of the last release with status pre-release or another not origin release'
     default: ''
     required: false
-  reverse:
-    description: 'Git log is chronological order by default. Set to true to reverse chronological order. '
-    default: 'false'
-    required: false
+
 outputs:
   changelog:
     description: 'Markdown formatted changelog'

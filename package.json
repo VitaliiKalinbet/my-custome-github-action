@@ -2,9 +2,9 @@
   "name": "my-custome-github-action",
   "version": "1.0.0",
   "description": "custome github action",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "build": "ncc build src/action.js -o dist",
+    "build": "ncc build src/index.js -o dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +21,7 @@
     "@actions/core": "^1.8.2",
     "@actions/exec": "^1.1.1",
     "@actions/github": "^5.0.3",
-    "@vercel/ncc": "^0.34.0"
+    "@vercel/ncc": "^0.34.0",
+    "moment": "^2.29.3"
   }
 }
