@@ -1,5 +1,5 @@
-import * as core from "@actions/core";
-import moment from "moment";
+import * as core from '@actions/core';
+import dayjs from 'dayjs';
 
 export async function getCommitsDiff(octokit, owner, repo, base, head) {
   const commits = await getDiffRemote(octokit, owner, repo, base, head);
@@ -12,6 +12,7 @@ async function getDiffRemote(octokit, owner, repo, base, head) {
   let commits = [];
   let compareHead = head;
   while (true) {
+    // eslint-disable-next-line no-await-in-loop
     const compareResult = await octokit.rest.repos.compareCommits({
       owner,
       repo,
@@ -26,17 +27,17 @@ async function getDiffRemote(octokit, owner, repo, base, head) {
   }
 
   core.info(
-    `ℹ️ Found ${commits.length} commits from the GitHub API for ${owner}/${repo}`
+    `ℹ️ Found ${commits.length} commits from the GitHub API for ${owner}/${repo}`,
   );
 
   return commits
     .filter((commit) => commit.sha)
     .map((commit) => ({
-      sha: commit.sha || "",
-      summary: commit.commit.message.split("\n")[0],
+      sha: commit.sha || '',
+      summary: commit.commit.message.split('\n')[0],
       message: commit.commit.message,
-      date: moment(commit.commit.committer?.date),
-      author: commit.commit.author?.name || "",
+      date: dayjs(commit.commit.committer?.date),
+      author: commit.commit.author?.name || '',
       prNumber: undefined,
     }));
 }
@@ -45,8 +46,10 @@ function sortCommits(commits) {
   const commitsResult = [];
   const shas = {};
 
+  // eslint-disable-next-line no-restricted-syntax
   for (const commit of commits) {
     if (shas[commit.sha]) {
+      // eslint-disable-next-line no-continue
       continue;
     }
     shas[commit.sha] = true;
@@ -56,7 +59,8 @@ function sortCommits(commits) {
   commitsResult.sort((a, b) => {
     if (a.date.isBefore(b.date)) {
       return -1;
-    } else if (b.date.isBefore(a.date)) {
+    }
+    if (b.date.isBefore(a.date)) {
       return 1;
     }
     return 0;

@@ -2,137 +2,66 @@ export function getChangelog(commits, owner, repo, fromTag, toTag) {
   let newChangelog = `# Version ${createChangelogTagLink(
     toTag,
     owner,
-    repo
-  )} (${new Date().toISOString().split("T")[0]})\n`;
+    repo,
+  )} (${new Date().toISOString().split('T')[0]})\n`;
 
   newChangelog += `### Commits list create from version ${createChangelogTagLink(
     fromTag,
     owner,
-    repo
+    repo,
   )} to version ${createChangelogTagLink(toTag, owner, repo)}\n\n`;
 
-  const features = [];
-  const fixes = [];
-  const docs = [];
-  const styles = [];
-  const refactors = [];
-  const performances = [];
-  const tests = [];
-  const chores = [];
-  const others = [];
+  const changelogSkeleton = {
+    fix: { title: 'Bug fixes', arr: [] },
+    feat: { title: 'Features', arr: [] },
+    docs: { title: 'Documentation', arr: [] },
+    style: { title: 'Code style', arr: [] },
+    refactor: { title: 'Refactor', arr: [] },
+    perf: { title: 'Perfomance improvements', arr: [] },
+    test: { title: 'Test', arr: [] },
+    chore: { title: 'Chore', arr: [] },
+  };
+
+  const regExp = /(feat|fix|docs|style|refactor|perf|test|chore)\(?([\w-]+)?\)?:\s*(.*)/;
+
+  function createChangelogLine(targetArray, scope, message, sha) {
+    if (!targetArray) return;
+    let linkToTask = '* ';
+    const taskNumberRegExp = /\w+-\d+/;
+    if (taskNumberRegExp.test(scope)) {
+      linkToTask = `* [${scope.toUpperCase()}](https://pdffiller.atlassian.net/browse/${scope.toUpperCase()}): `;
+    }
+    changelogSkeleton[targetArray].arr.push(
+      `${linkToTask} ${message} ([${sha.substring(
+        0,
+        6,
+      )}](https://github.com/${owner}/${repo}/commit/${sha}))\n`,
+    );
+  }
+
+  function supplementChangelog(array, title) {
+    if (array.length === 0) return;
+
+    newChangelog += `## ${title}\n`;
+    array.forEach((item) => {
+      newChangelog += item;
+    });
+    newChangelog += '\n';
+  }
 
   commits.forEach((commit) => {
-    if (commit.message.startsWith("feat")) {
-      createChangelogLine(features, commit, owner, repo);
-    } else if (commit.message.startsWith("fix")) {
-      createChangelogLine(fixes, commit, owner, repo);
-    } else if (commit.message.startsWith("docs")) {
-      createChangelogLine(docs, commit, owner, repo);
-    } else if (commit.message.startsWith("style")) {
-      createChangelogLine(styles, commit, owner, repo);
-    } else if (commit.message.startsWith("refactor")) {
-      createChangelogLine(refactors, commit, owner, repo);
-    } else if (commit.message.startsWith("perf")) {
-      createChangelogLine(performances, commit, owner, repo);
-    } else if (commit.message.startsWith("test")) {
-      createChangelogLine(tests, commit, owner, repo);
-    } else if (commit.message.startsWith("chore")) {
-      createChangelogLine(chores, commit, owner, repo);
-    } else if (commit.message.includes("[skip bot]")) {
-      return;
-    } else if (commit.message.includes("Merge branch")) {
-      return;
-    } else {
-      createChangelogLine(others, commit, owner, repo);
+    const matchResult = commit.message.match(regExp);
+    if (matchResult) {
+      const [, type, scope, message] = matchResult;
+      createChangelogLine(type, scope, message, commit.sha);
     }
   });
 
-  if (fixes.length) {
-    newChangelog += `## Bug fix${fixes.length === 1 ? "" : "es"}\n`;
-    fixes.forEach((feature) => {
-      newChangelog += feature;
-    });
-    newChangelog += "\n";
-  }
-
-  if (features.length) {
-    newChangelog += `## Feature${features.length === 1 ? "" : "s"}\n`;
-    features.forEach((feature) => {
-      newChangelog += feature;
-    });
-    newChangelog += "\n";
-  }
-
-  if (docs.length) {
-    newChangelog += `## Documentation change${docs.length === 1 ? "" : "s"}\n`;
-    docs.forEach((feature) => {
-      newChangelog += feature;
-    });
-    newChangelog += "\n";
-  }
-
-  if (styles.length) {
-    newChangelog += `## Code style change${styles.length === 1 ? "" : "s"}\n`;
-    styles.forEach((feature) => {
-      newChangelog += feature;
-    });
-    newChangelog += "\n";
-  }
-
-  if (refactors.length) {
-    newChangelog += `## Refactor change${refactors.length === 1 ? "" : "s"}\n`;
-    refactors.forEach((feature) => {
-      newChangelog += feature;
-    });
-    newChangelog += "\n";
-  }
-
-  if (performances.length) {
-    newChangelog += `## Perfomance Improvement${
-      performances.length === 1 ? "" : "s"
-    }\n`;
-    performances.forEach((feature) => {
-      newChangelog += feature;
-    });
-    newChangelog += "\n";
-  }
-
-  if (tests.length) {
-    newChangelog += `## Test change${tests.length === 1 ? "" : "s"}\n`;
-    tests.forEach((feature) => {
-      newChangelog += feature;
-    });
-    newChangelog += "\n";
-  }
-
-  if (chores.length) {
-    newChangelog += `## Chore\n`;
-    chores.forEach((chore) => {
-      newChangelog += chore;
-    });
-    newChangelog += "\n";
-  }
-
-  if (others.length) {
-    newChangelog += `## Other change${others.length === 1 ? "" : "s"}\n`;
-    others.forEach((other) => {
-      newChangelog += other;
-    });
-    newChangelog += "\n";
-  }
-
-  return newChangelog;
-}
-
-function createChangelogLine(targetArray, commit, owner, repo) {
-  targetArray.push(
-    `* ${commit.message} ([${commit.sha.substring(
-      0,
-      6
-    )}](https://github.com/${owner}/${repo}/commit/${commit.sha}))\n`
+  Object.values(changelogSkeleton).forEach(
+    (commitsGroup) => supplementChangelog(commitsGroup.arr, commitsGroup.title),
   );
 
-  return;
+  return newChangelog;
 }
 
 function createChangelogTagLink(tag, owner, repo) {
